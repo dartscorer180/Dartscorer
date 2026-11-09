@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -6,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dart Scorer</title>
     <link rel="stylesheet" href="style.css">
-
-<link rel="manifest" href="manifest.json">
-
-<meta name="theme-color" content="#080b11">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#080b11">
 </head>
 <body>
 
@@ -132,6 +129,30 @@
             <div class="card">
                 <h2>Letzte Würfe</h2>
                 <div id="throwHistory"></div>
+            </div>
+
+            <!-- DART-KAMERA -->
+            <div class="card camera-card">
+                <h2>🎥 Dart-Kamera</h2>
+
+                <video
+                    id="cameraVideo"
+                    autoplay
+                    playsinline
+                    muted>
+                </video>
+
+                <div class="button-row">
+                    <button class="primary-button" id="startCameraButton">
+                        Kamera starten
+                    </button>
+
+                    <button class="secondary-button" id="stopCameraButton" disabled>
+                        Kamera stoppen
+                    </button>
+                </div>
+
+                <p id="cameraMessage">Kamera ist ausgeschaltet.</p>
             </div>
 
             <button class="secondary-button" id="quitGameButton">
