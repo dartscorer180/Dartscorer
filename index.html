@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dart Scorer</title>
+    <link rel="stylesheet" href="style.css">
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#080b11">
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>DART SCORER</h2>
+            <button id="toggleButton">☰</button>
+        </div>
+
+        <nav>
+            <a href="#" data-page="dashboard">🏠 <span>Dashboard</span></a>
+            <a href="#" data-page="gameSetup">🎯 <span>Neues Spiel</span></a>
+            <a href="#" data-page="statistics">📊 <span>Statistiken</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page active-page">
+            <h1>Dashboard</h1>
+            <p class="subtitle">Willkommen beim Dart Scorer.</p>
+
+            <div class="stats-grid">
+                <div class="card">
+                    <h3>Gespielte Spiele</h3>
+                    <p class="big-number" id="dashboardGames">0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Registrierte Spieler</h3>
+                    <p class="big-number" id="dashboardPlayers">0</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Schnellstart</h2>
+                <p>Starte ein neues Dartspiel und verfolge deine Ergebnisse.</p>
+                <button class="primary-button" id="newGameButton">
+                    Neues Spiel starten
+                </button>
+            </div>
+        </section>
+
+        <!-- SPIELEINRICHTUNG -->
+        <section id="gameSetup" class="page">
+            <h1>Neues Spiel</h1>
+            <p class="subtitle">Richte dein Dartspiel ein.</p>
+
+            <div class="card">
+                <h2>Spielmodus</h2>
+
+                <div class="button-row">
+                    <button class="mode-button" data-game="301">301</button>
+                    <button class="mode-button" data-game="501">501</button>
+                </div>
+
+                <p id="selectedMode">Bitte wähle einen Spielmodus.</p>
+            </div>
+
+            <div class="card">
+                <h2>Spieleranzahl</h2>
+
+                <select id="playerCount">
+                    <option value="1">1 Spieler</option>
+                    <option value="2" selected>2 Spieler</option>
+                    <option value="3">3 Spieler</option>
+                    <option value="4">4 Spieler</option>
+                </select>
+
+                <div id="playerInputs"></div>
+            </div>
+
+            <div class="card">
+                <h2>Spieloptionen</h2>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="doubleOut">
+                    Double Out aktivieren
+                </label>
+            </div>
+
+            <button class="primary-button" id="startGameButton">
+                Spiel starten
+            </button>
+        </section>
+
+        <!-- SPIEL -->
+        <section id="gameScreen" class="page">
+            <h1>Aktuelles Spiel</h1>
+            <p class="subtitle" id="gameModeText"></p>
+
+            <div id="scoreboard" class="scoreboard"></div>
+
+            <div class="card">
+                <h2>Punkte eintragen</h2>
+
+                <p id="activePlayerText">Aktiver Spieler:</p>
+
+                <input
+                    type="number"
+                    id="scoreInput"
+                    placeholder="Punkte eingeben"
+                    min="0"
+                    max="180"
+                >
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="checkout">
+                    Letzter Dart war ein Double oder Bull
+                </label>
+
+                <button class="primary-button" id="throwButton">
+                    Punkte eintragen
+                </button>
+
+                <p id="message"></p>
+            </div>
+
+            <div class="card">
+                <h2>Letzte Würfe</h2>
+                <div id="throwHistory"></div>
+            </div>
+
+            <button class="secondary-button" id="quitGameButton">
+                Spiel beenden
+            </button>
+        </section>
+
+        <!-- STATISTIKEN -->
+        <section id="statistics" class="page">
+            <h1>Statistiken</h1>
+            <p class="subtitle">Deine bisherigen Leistungen.</p>
+
+            <div class="stats-grid">
+                <div class="card">
+                    <h3>Spiele insgesamt</h3>
+                    <p class="big-number" id="totalGames">0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Spieler insgesamt</h3>
+                    <p class="big-number" id="totalPlayers">0</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Spielerrangliste</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Platz</th>
+                                <th>Spieler</th>
+                                <th>Spiele</th>
+                                <th>Siege</th>
+                                <th>Ø Punkte</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Spielerverlauf</h2>
+                <select id="historyPlayer">
+                    <option value="">Spieler auswählen</option>
+                </select>
+                <div id="playerHistory"></div>
+            </div>
+
+            <button class="secondary-button" id="resetStatsButton">
+                Statistiken zurücksetzen
+            </button>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
