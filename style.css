@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -283,6 +282,34 @@ th {
     color: #00d9ff;
 }
 
+/* DART-KAMERA */
+
+.camera-card video {
+    display: block;
+    width: 100%;
+    max-height: 500px;
+    aspect-ratio: 4 / 3;
+    background: #080b11;
+    border-radius: 10px;
+    margin-top: 15px;
+    object-fit: contain;
+}
+
+.camera-card .button-row {
+    flex-wrap: wrap;
+}
+
+.camera-card button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#cameraMessage {
+    color: #00d9ff;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 700px) {
@@ -308,5 +335,17 @@ th {
     .sidebar:not(.collapsed) .sidebar-header h2,
     .sidebar:not(.collapsed) nav a span {
         display: inline;
+    }
+
+    .camera-card {
+        padding: 15px;
+    }
+
+    .camera-card .button-row {
+        flex-direction: column;
+    }
+
+    .camera-card button {
+        width: 100%;
     }
 }
