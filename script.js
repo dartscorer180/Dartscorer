@@ -1,4 +1,3 @@
-
 const STORAGE_KEY = "dartScorerData";
 
 let appData = loadData();
@@ -195,6 +194,8 @@ function startGame() {
     currentPlayer = 0;
     gameActive = true;
 
+    resetThrowButton();
+
     document.getElementById("gameModeText").textContent =
         selectedGame + " Punkte";
 
@@ -263,7 +264,12 @@ function registerThrow() {
     const points = Number(input.value);
     const checkout = document.getElementById("checkout").checked;
 
-    if (input.value.trim() === "" || !Number.isInteger(points) || points < 0 || points > 180) {
+    if (
+        input.value.trim() === "" ||
+        !Number.isInteger(points) ||
+        points < 0 ||
+        points > 180
+    ) {
         document.getElementById("message").textContent =
             "Bitte gib einen gültigen Wert zwischen 0 und 180 ein.";
         return;
@@ -358,6 +364,7 @@ function finishGame(winner) {
         profile.games++;
         profile.turns += player.turns;
         profile.totalPoints += player.totalPoints;
+
         profile.highestVisit = Math.max(
             profile.highestVisit,
             player.highestVisit
@@ -394,6 +401,7 @@ function resetThrowButton() {
 
 document.getElementById("quitGameButton").addEventListener("click", () => {
     if (!gameActive) {
+        stopCamera();
         showPage("dashboard");
         return;
     }
@@ -402,6 +410,7 @@ document.getElementById("quitGameButton").addEventListener("click", () => {
 
     if (confirmed) {
         gameActive = false;
+        stopCamera();
         resetThrowButton();
         showPage("dashboard");
     }
@@ -533,12 +542,92 @@ document.getElementById("resetStatsButton").addEventListener("click", () => {
     document.getElementById("playerHistory").innerHTML = "";
 });
 
+// ===================================
+// DART-KAMERA
+// ===================================
+
+const cameraVideo = document.getElementById("cameraVideo");
+const startCameraButton = document.getElementById("startCameraButton");
+const stopCameraButton = document.getElementById("stopCameraButton");
+const cameraMessage = document.getElementById("cameraMessage");
+
+let cameraStream = null;
+
+// KAMERA STARTEN
+
+startCameraButton.addEventListener("click", async () => {
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        cameraMessage.textContent =
+            "Kamerazugriff nicht verfügbar. Bitte HTTPS verwenden.";
+        return;
+    }
+
+    try {
+        cameraMessage.textContent = "Kamera wird gestartet...";
+
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: {
+                    ideal: "environment"
+                }
+            },
+            audio: false
+        });
+
+        cameraVideo.srcObject = cameraStream;
+
+        await cameraVideo.play();
+
+        cameraMessage.textContent = "Kamera ist aktiv! 🎯";
+
+        startCameraButton.disabled = true;
+        stopCameraButton.disabled = false;
+
+    } catch (error) {
+        console.error("Kamerafehler:", error);
+
+        cameraMessage.textContent =
+            "Kamera konnte nicht gestartet werden. Bitte Kamerazugriff erlauben.";
+
+        startCameraButton.disabled = false;
+        stopCameraButton.disabled = true;
+    }
+});
+
+// KAMERA STOPPEN
+
+document.getElementById("stopCameraButton").addEventListener("click", stopCamera);
+
+function stopCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => {
+            track.stop();
+        });
+
+        cameraStream = null;
+    }
+
+    cameraVideo.srcObject = null;
+
+    cameraMessage.textContent = "Kamera ist ausgeschaltet.";
+
+    startCameraButton.disabled = false;
+    stopCameraButton.disabled = true;
+}
+
+// KAMERA BEIM VERLASSEN DER APP STOPPEN
+
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden && cameraStream) {
+        stopCamera();
+    }
+});
+
 // START
 
 updateDashboard();
 updateStatistics();
-
-
 
 // SERVICE WORKER REGISTRIEREN
 
